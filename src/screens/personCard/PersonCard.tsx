@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { PersonProps } from '../../interfaces/appInterfaces';
 import Container from '@material-ui/core/Container';
 
-const Person: FC<PersonProps> = () => {
+const PersonCard: FC<PersonProps> = () => {
 
 	return (
     <Container>
@@ -11,4 +11,4 @@ const Person: FC<PersonProps> = () => {
 	)
 }
 
-export default Person;
+export default PersonCard;

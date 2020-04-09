@@ -2,7 +2,7 @@ import {SET_PERSON_DATA} from '../constants/constants';
 import { Actions, PersonProps } from '../interfaces/appInterfaces';
 
 const initialState: PersonProps = {
-  personData: undefined
+  personData: {}
 }
 
 export default function listReducer(state: PersonProps = initialState, action: Actions) {

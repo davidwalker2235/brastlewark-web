@@ -14,6 +14,18 @@ export interface Brastlewark {
   friends: Array<string>;
 };
 
+export interface BrastlewarkProp {
+  id?: number;
+  name?: string;
+  thumbnail?: string;
+  age?: number;
+  weight?: number;
+  height?: number;
+  hair_color?: string;
+  professions?: Array<string>;
+  friends?: Array<string>;
+};
+
 export interface GlobalData {
   Brastlewark: Brastlewark[]
 }
@@ -59,23 +71,20 @@ export interface CoverProps {
 // List
 export interface ListProps {
   route?: any;
-  personListData?: ListData[];
-  professionListData?: ListData[];
+  personListData: Brastlewark[];
   listType?: ListTypeEnum;
-  personsFromProfession?: ListData[]
   listData?: ListData[];
   onClickRow?: (name?: string, id?: number) => void;
 };
 
 export interface ListRows {
-  route?: any;
-  itemData: Brastlewark;
-  listType: ListTypeEnum; 
-  onClickRow: (name?: string, id?: number) => void;
+  data: Brastlewark;
+  panelId: number;
+  panelExpanded: string | boolean; 
+  handleChange: (panelId: string | boolean) => void;
 }
 
 // Person
 export interface PersonProps {
-  route?: any;
-  personData?: Brastlewark;
+  personData: BrastlewarkProp;
 }

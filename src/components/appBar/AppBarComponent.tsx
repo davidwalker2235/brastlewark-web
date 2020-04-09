@@ -5,10 +5,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import {FilterComponent} from '../../components';
 import styles from './styles';
+import locale from '../../shared/locale';
 
 const AppBarComponent: FC<{}> = () => {
   const classes = styles();
@@ -28,19 +28,21 @@ const AppBarComponent: FC<{}> = () => {
             color="inherit"
             aria-label="open drawer"
             onClick={toggleDrawer('left', true)}
-            onKeyDown={toggleDrawer('left', true)}
-          >
-            <MenuIcon />
+            onKeyDown={toggleDrawer('left', true)}>
+              <Typography className={classes.title} variant="h6" noWrap>
+                {locale.Filter}
+              </Typography>
+            <SearchIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+            {locale.ListOfPersons}
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder={locale.SearchByPersonsName}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
