@@ -1,0 +1,5 @@
+export enum ListTypeEnum {
+  PERSON,
+  PROFESSION,
+  PERSON_FROM_PROFESSION
+}
