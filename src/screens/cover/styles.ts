@@ -24,7 +24,19 @@ const styles = makeStyles({
     backgroundColor: 'purple !important',
     '&:hover': {
       backgroundColor: 'blue !important',
-    },
+    }
+  },
+  buttonContainer: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  logoImage: {
+    zIndex: 1,
+    width: '60vw'
   }
 });
 

@@ -4,10 +4,11 @@ const locale = {
   ListOfPersons: 'List of persons',
   EnterToCity: 'Enter to City',
   ListOfProfessions: 'List of professions',
-  SearchByPersonsName: "Search by person's name",
+  SearchByPersonsName: "Search by name",
   SearchByPofession: 'Search by profession',
   PeopleWhoWorkIn: 'People who work in',
-  Filter: 'Filter'
+  Filter: 'Filter',
+  Age: 'Age'
 }
 
 export default locale;

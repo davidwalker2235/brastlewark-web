@@ -4,6 +4,9 @@ const styles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
     },
+    appBar: {
+      backgroundColor: 'rgba(0, 0, 0, 0.7)'
+    },
     menuButton: {
       marginRight: theme.spacing(2),
     },
@@ -13,6 +16,9 @@ const styles = makeStyles((theme) => ({
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
+    },
+    logoImageTitle: {
+      maxWidth: '180px'
     },
     search: {
       position: 'relative',
@@ -37,6 +43,9 @@ const styles = makeStyles((theme) => ({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    filterIcon: {
+      marginLeft: 10
+    },
     inputRoot: {
       color: 'inherit',
     },
@@ -47,9 +56,9 @@ const styles = makeStyles((theme) => ({
       transition: theme.transitions.create('width'),
       width: '100%',
       [theme.breakpoints.up('sm')]: {
-        width: '25ch',
+        width: '20ch',
         '&:focus': {
-          width: '25ch',
+          width: '40ch',
         },
       },
     },

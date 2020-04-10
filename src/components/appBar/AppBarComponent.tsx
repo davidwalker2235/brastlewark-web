@@ -9,8 +9,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import {FilterComponent} from '../../components';
 import styles from './styles';
 import locale from '../../shared/locale';
+import logo from '../../shared/images/logo.png';
 
-const AppBarComponent: FC<{}> = () => {
+const AppBarComponent: FC<any> = ({children}) => {
   const classes = styles();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,7 +21,7 @@ const AppBarComponent: FC<{}> = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar className={classes.appBar} position="fixed">
         <Toolbar>
           <IconButton
             edge="start"
@@ -32,11 +33,11 @@ const AppBarComponent: FC<{}> = () => {
               <Typography className={classes.title} variant="h6" noWrap>
                 {locale.Filter}
               </Typography>
-            <SearchIcon />
+            <SearchIcon className={classes.filterIcon} />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            {locale.ListOfPersons}
-          </Typography>
+          <div className={classes.title}>
+            <img className={classes.logoImageTitle} alt='CoverImage' src={logo} />
+          </div>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -55,6 +56,7 @@ const AppBarComponent: FC<{}> = () => {
       <Drawer anchor='left' open={isOpen} onClose={toggleDrawer('left', false)}>
         <FilterComponent />
       </Drawer>
+      {children}
     </div>
   );
 }

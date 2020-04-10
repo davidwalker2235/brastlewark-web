@@ -10,7 +10,6 @@ function* fetchGetGlobalData() {
     yield put(showLoading());
     const userData = yield call(getGlobalData);
     yield put(getPersonListData(userData));
-    yield put(setPersonData(userData));
     yield put(hideLoading());
   } catch (e) {
     alert(e.message)

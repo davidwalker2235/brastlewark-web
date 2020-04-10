@@ -7,40 +7,46 @@ import {State} from '../../interfaces/appInterfaces';
 import styles from './styles';
 import { getGlobalData } from '../../actions/homeActions';
 import {ExpansionPanelComponent} from '../../components';
+import backgroundFog from '../../shared/images/backgroundFog.jpg';
+import { getPersonData } from '../../actions/personActions';
 var Infinite = require('react-infinite');
 
 const PersonsList: FC<ListProps> = () => {
   const classes = styles();
   const dispatch = useDispatch();
-  const personData = useSelector((state: State) => state.list.personListData)
+  const personsListData = useSelector((state: State) => state.list.personListData);
+  const globalData = useSelector((state: State) => state.home.globalData);
   const [expandedPanel, setExpandedPanel] = useState<string | boolean>(false);
 
   useEffect(() => {
     dispatch(getGlobalData());
   },[]);
 
-  const handleChange = (panelId: string | boolean) => {
+  const handleChange = (personId: number, panelId: string | boolean) => {
+    dispatch(getPersonData(personId, globalData));
     setExpandedPanel(panelId);
   };
 
   return (
     <div>
-      <AppBarComponent />
-      <Container className={classes.container}>
-        <div className={classes.root}>
-        <Infinite containerHeight={200} elementHeight={40} useWindowAsScrollContainer>
-          {personData.map((person: Brastlewark, index: number) => (
-            <ExpansionPanelComponent
-              data={person}
-              key={`person${index}`}
-              panelId={index}
-              panelExpanded={expandedPanel}
-              handleChange={handleChange}
-            />
-          ))}
-          </Infinite>
-        </div>
-      </Container>
+      <img alt='personListBGImage' className={classes.psBackground} src={backgroundFog} />
+      <AppBarComponent>
+        <Container className={classes.container}>
+          <div className={classes.root}>
+          <Infinite containerHeight={200} elementHeight={40} useWindowAsScrollContainer>
+            {personsListData.map((person: Brastlewark, index: number) => (
+              <ExpansionPanelComponent
+                data={person}
+                key={`person${index}`}
+                panelId={index}
+                panelExpanded={expandedPanel}
+                handleChange={handleChange}
+              />
+            ))}
+            </Infinite>
+          </div>
+        </Container>
+      </ AppBarComponent>
     </div>
 	)
 }

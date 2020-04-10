@@ -18,7 +18,7 @@ const ExpansionPanelComponent: FC<ListRows> = ({data, panelId, panelExpanded, ha
   },[]);
 
   const onChange = (panelId: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    handleChange(newExpanded ? panelId : false)
+    handleChange(data.id, newExpanded ? panelId : false)
   };
 
   return (
@@ -28,11 +28,13 @@ const ExpansionPanelComponent: FC<ListRows> = ({data, panelId, panelExpanded, ha
       aria-controls={`panel${panelId}bh-content`}
       id={`panel${panelId}bh-header`}
     >
-      {panelExpanded !== panelNumber && <Avatar alt={`panel-${data.name}-avatar`} src={data.thumbnail} />}
-      <Typography className={classes.heading}>{data?.name}</Typography>
+      <div className={classes.summary}>
+        {panelExpanded !== panelNumber && <Avatar alt={`panel-${data.name}-avatar`} src={data.thumbnail} />}
+        <Typography className={classes.heading}>{data?.name}</Typography>
+      </div>
     </ExpansionPanelSummary>
-    <ExpansionPanelDetails>
-      <PersonInfo personData={data} />
+    <ExpansionPanelDetails className={classes.detailsRoot}>
+      <PersonInfo />
     </ExpansionPanelDetails>
   </ExpansionPanel>
 );

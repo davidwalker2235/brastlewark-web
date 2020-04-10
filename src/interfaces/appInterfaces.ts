@@ -60,7 +60,7 @@ export interface LoadingState {
 
 // Home
 export interface HomeProps {
-  globalData: Object;
+  globalData: Brastlewark[];
 }
 
 // Cover
@@ -81,7 +81,7 @@ export interface ListRows {
   data: Brastlewark;
   panelId: number;
   panelExpanded: string | boolean; 
-  handleChange: (panelId: string | boolean) => void;
+  handleChange: (personId: number, panelId: string | boolean) => void;
 }
 
 // Person

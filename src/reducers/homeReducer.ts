@@ -2,7 +2,7 @@ import {SET_GLOBAL_DATA} from '../constants/constants';
 import { Actions, HomeProps } from '../interfaces/appInterfaces';
 
 const initialState: HomeProps = {
-  globalData: {undefined}
+  globalData: []
 }
 
 export default function homeReducer(state: HomeProps = initialState, action: Actions) {
