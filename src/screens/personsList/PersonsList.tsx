@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, connect} from 'react-redux';
 import { ListProps, Brastlewark } from '../../interfaces/appInterfaces';
 import Container from '@material-ui/core/Container';
 import {AppBarComponent} from '../../components';
@@ -9,22 +9,36 @@ import { getGlobalData } from '../../actions/homeActions';
 import {ExpansionPanelComponent} from '../../components';
 import backgroundFog from '../../shared/images/backgroundFog.jpg';
 import { getPersonData } from '../../actions/personActions';
-var Infinite = require('react-infinite');
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-const PersonsList: FC<ListProps> = () => {
+const PersonsList: FC<ListProps> = ({personListData}) => {
   const classes = styles();
   const dispatch = useDispatch();
-  const personsListData = useSelector((state: State) => state.list.personListData);
+  // const personsListData = useSelector((state: State) => state.list.personListData);
   const globalData = useSelector((state: State) => state.home.globalData);
   const [expandedPanel, setExpandedPanel] = useState<string | boolean>(false);
+  const [listData, setListData] = useState<Brastlewark[]>([]);
+  let listIndex: number = 20;
 
   useEffect(() => {
-    dispatch(getGlobalData());
-  },[]);
+    if (!globalData.length) {
+      dispatch(getGlobalData());
+    }
+    if (personListData.length) {
+      setListData(personListData.slice(0, listIndex))
+    }
+  },[personListData]);
 
   const handleChange = (personId: number, panelId: string | boolean) => {
     dispatch(getPersonData(personId, globalData));
     setExpandedPanel(panelId);
+  };
+
+  const fetchMoreData = () => {
+    let newListData: Brastlewark[] = listData;
+    newListData = newListData.concat(personListData.slice(listIndex, listIndex + 20));
+    listIndex = listIndex + 20;
+    setListData(newListData);
   };
 
   return (
@@ -33,8 +47,12 @@ const PersonsList: FC<ListProps> = () => {
       <AppBarComponent>
         <Container className={classes.container}>
           <div className={classes.root}>
-          <Infinite containerHeight={200} elementHeight={40} useWindowAsScrollContainer>
-            {personsListData.map((person: Brastlewark, index: number) => (
+          <InfiniteScroll
+            dataLength={listData.length}
+            next={fetchMoreData}
+            hasMore={true}
+            loader={<h4>Loading...</h4>}>
+            {listData.map((person: Brastlewark, index: number) => (
               <ExpansionPanelComponent
                 data={person}
                 key={`person${index}`}
@@ -43,7 +61,7 @@ const PersonsList: FC<ListProps> = () => {
                 handleChange={handleChange}
               />
             ))}
-            </Infinite>
+            </InfiniteScroll>
           </div>
         </Container>
       </ AppBarComponent>
@@ -51,4 +69,8 @@ const PersonsList: FC<ListProps> = () => {
 	)
 }
 
-export default PersonsList;
+const mapStateToProps = (state: State) => ({
+  personListData: state.list.personListData
+})
+
+export default connect(mapStateToProps, null)(PersonsList);
