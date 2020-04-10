@@ -36,6 +36,10 @@ const styles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
     },
+    friendsThubnails: {
+      display: 'flex',
+      alignItems: 'center'
+    }
   }),
 );
 

@@ -1,4 +1,4 @@
-import { ListData, ListInfoData, Brastlewark } from "../interfaces/appInterfaces";
+import { ListData, ListInfoData, Brastlewark, FriendsData } from "../interfaces/appInterfaces";
 
 export const getProfessions = (brastlewarkData: Brastlewark[]): ListInfoData => {
   let professions: string[] = [];
@@ -33,4 +33,13 @@ export const getPersonsList = (brastlewarkData: Brastlewark[]): ListInfoData => 
 
 export const getPersonData = (id: number, brastlewarkData: Brastlewark[]): Brastlewark => {
   return brastlewarkData.find(person => person.id === id) as Brastlewark;
+}
+
+export const getFriendsList = (friendsList: string[], brastlewarkData: Brastlewark[]): FriendsData[] => {
+  const friendsListData: FriendsData[] = [];
+  friendsList.forEach((friendName: string) => {
+    const friendData: Brastlewark = brastlewarkData.find(person => person.name === friendName) as Brastlewark;
+    friendData && friendsListData.push({id: friendData.id, thumbnail: friendData.thumbnail})
+  });
+  return friendsListData;
 }

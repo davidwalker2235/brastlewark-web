@@ -72,6 +72,7 @@ export interface CoverProps {
 export interface ListProps {
   route?: any;
   personListData: Brastlewark[];
+  friendsListData: FriendsData[];
   listType?: ListTypeEnum;
   listData?: ListData[];
   onClickRow?: (name?: string, id?: number) => void;
@@ -82,6 +83,11 @@ export interface ListRows {
   panelId: number;
   panelExpanded: string | boolean; 
   handleChange: (personId: number, panelId: string | boolean) => void;
+}
+
+export interface FriendsData {
+  id: number;
+  thumbnail: string;
 }
 
 // Person
