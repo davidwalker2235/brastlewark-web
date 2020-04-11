@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { State, BrastlewarkProp, FriendsData, PersonInfoProps } from '../../interfaces/appInterfaces';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -25,11 +25,14 @@ const PersonInfo: FC<PersonInfoProps> = ({onClickFriend}) => {
   },[]);
 
   const getProfessions = (data: BrastlewarkProp) => (
-    data?.professions?.map((profession: string) => (
+    data.professions?.length ? data.professions?.map((profession: string) => (
       <Typography variant="subtitle1" color="textSecondary">
         {profession}
       </Typography>
-    ))
+    )) :
+    <Typography variant="subtitle1" color="textSecondary">
+      No works (Citizen stopped)
+    </Typography>
   );
 
   const getPersonInfo = (infoType: PersonEnum) => {
