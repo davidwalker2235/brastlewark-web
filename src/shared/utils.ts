@@ -1,9 +1,9 @@
-import { ListData, ListInfoData, Brastlewark, FriendsData } from "../interfaces/appInterfaces";
+import { ListData, ListInfoData, Brastlewark, FriendsData, FilterData } from "../interfaces/appInterfaces";
 
 export const getProfessions = (brastlewarkData: Brastlewark[]): ListInfoData => {
   let professions: string[] = [];
-  brastlewarkData && brastlewarkData.forEach((profession: Brastlewark)=>{
-    professions = Array.from(new Set(professions.concat(...profession?.professions || [])));
+  brastlewarkData && brastlewarkData.forEach((person: Brastlewark)=>{
+    professions = Array.from(new Set(professions.concat(...person?.professions || [])));
   });
 
   return {listData: professions.map((name) => ({name}))};
@@ -34,4 +34,16 @@ export const getFriendsList = (friendsList: string[], brastlewarkData: Brastlewa
     friendData && friendsListData.push({id: friendData.id, thumbnail: friendData.thumbnail})
   });
   return friendsListData;
+}
+
+export const getFilterData = (globalData: Brastlewark[]): FilterData => {
+  let hairColors: string[] = [];
+  let professions: string[] = [];
+
+  globalData.forEach((person: Brastlewark) => {
+    professions = Array.from(new Set(professions.concat(...person?.professions || [])));
+    !hairColors.includes(person.hair_color) && hairColors.push(person.hair_color);
+  });
+
+  return {hairColors, professions}
 }

@@ -49,6 +49,7 @@ export interface State {
   home: HomeProps;
   list: ListProps;
   person: PersonProps;
+  filter: FilterState;
   router: RouterState;
 }
 
@@ -107,4 +108,14 @@ export interface PersonProps {
 
 export interface PersonInfoProps {
   onClickFriend?: (personId: number | undefined) => void;
+}
+
+// Filter
+export interface FilterData {
+  professions: string[],
+  hairColors: string[],
+  [key: string]: string[]
+}
+export interface FilterState {
+  filterData: FilterData | undefined
 }

@@ -6,6 +6,7 @@ import loadingReducer from './loadingReducer';
 import listReducer from './listReducer';
 import personReducer from './personReducer';
 import modalReducer from './modalReducer';
+import filterReducer from './filterReducers';
 
 const rootReducer = (history: History) => combineReducers({
   home: homeReduder,
@@ -13,6 +14,7 @@ const rootReducer = (history: History) => combineReducers({
   list: listReducer,
   person: personReducer,
   modal: modalReducer,
+  filter: filterReducer,
   router: connectRouter(history)
 })
 

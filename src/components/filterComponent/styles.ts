@@ -1,8 +1,12 @@
-import { makeStyles, fade } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const styles = makeStyles((theme) => ({
   root: {
     width: 300,
+  },
+  title: {
+    flexGrow: 1,
+    display: 'none',
   },
   formControl: {
     margin: theme.spacing(1),

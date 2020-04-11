@@ -15,7 +15,8 @@ const locale = {
   Height: 'Height',
   HairColor: 'Hair color',
   Friends: 'Friends',
-  NoFriends: 'Person with no friends, maybe he is an informatic'
+  NoFriends: 'Person with no friends, maybe he is an informatic',
+  SelectToFilter: 'Select to filter'
 }
 
 export default locale;

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import styles from './styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -13,26 +13,24 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import locale from '../../shared/locale';
+import { useSelector, useDispatch } from 'react-redux';
+import { State, FilterData, Brastlewark } from '../../interfaces/appInterfaces';
+import { getFilterData } from '../../actions/filterActions';
 
 const FilterComponent: FC<any> = () => {
+  const dispatch = useDispatch();
+  const filterData: FilterData | undefined = useSelector((state: State) => state.filter.filterData);
+  const globalData: Brastlewark[] = useSelector((state: State) => state.home.globalData);
+  useEffect(() => {
+    !filterData && dispatch(getFilterData(globalData));
+  });
+
   const [value, setValue] = useState<number[]>([20, 37]);
   const [personName, setPersonName] = useState<string[]>([]);
   const classes = styles();
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
-
-  const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-  ];
 
   const MenuProps = {
     PaperProps: {
@@ -70,7 +68,7 @@ const FilterComponent: FC<any> = () => {
     setPersonName(event.target.value as string[]);
   };
 
-  const renderMultiselect = () => (
+  const renderMultiselect = (dataOption: string) => (
     <FormControl className={classes.formControl}>
       <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
       <Select
@@ -83,7 +81,7 @@ const FilterComponent: FC<any> = () => {
         renderValue={(selected) => (selected as string[]).join(', ')}
         MenuProps={MenuProps}
       >
-        {names.map((name) => (
+        {filterData && filterData[dataOption].map((name) => (
           <MenuItem key={name} value={name}>
             <Checkbox checked={personName.indexOf(name) > -1} />
             <ListItemText primary={name} />
@@ -100,28 +98,28 @@ const FilterComponent: FC<any> = () => {
     >
       <List>
         <ListItem key="sdfsdfsdf">
-          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-        </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderSlider()}
-        </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderSlider()}
-        </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderSlider()}
-        </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderMultiselect()}
-        </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderMultiselect()}
+          <ListItemText primary={locale.SelectToFilter} />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button key="sdfsdfsdf">
-          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+        <ListItem key="name">
+          <TextField id="standard-basic" label="Standard" />
+        </ListItem>
+        <ListItem key="sdfsdfsdf">
+          {renderSlider()}
+        </ListItem>
+        <ListItem key="sdfsdfsdf">
+          {renderSlider()}
+        </ListItem>
+        <ListItem key="sdfsdfsdf">
+          {renderSlider()}
+        </ListItem>
+        <ListItem key="sdfsdfsdf">
+          {renderMultiselect('hairColors')}
+        </ListItem>
+        <ListItem key="sdfsdfsdf">
+          {renderMultiselect('professions')}
         </ListItem>
       </List>
     </div>
