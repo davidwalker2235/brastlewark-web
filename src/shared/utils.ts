@@ -9,19 +9,11 @@ export const getProfessions = (brastlewarkData: Brastlewark[]): ListInfoData => 
   return {listData: professions.map((name) => ({name}))};
 };
 
-export const getPersonListDataFromProfession = (data: any): ListInfoData => {
+export const getPersonsListByName = (data: any): ListInfoData => {
   const {name, globalData} = data;
-
-  const listData: ListData[] = globalData
-    .filter((person: Brastlewark) => person.professions
-    .includes(name))
-    .map(((personData: Brastlewark) => ({
-      id: personData.id,
-      name: personData.name,
-      thumbnail: personData.thumbnail
-    })));
-
-  return {listData};
+  return globalData
+    .filter((person: Brastlewark) => person.name.toUpperCase().includes(name.toUpperCase()))
+    .map(({id, name, thumbnail}: Brastlewark) => ({id, name, thumbnail}));
 }
 
 export const getPersonsList = (brastlewarkData: Brastlewark[]): ListInfoData => {

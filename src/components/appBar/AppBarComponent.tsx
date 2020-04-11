@@ -10,14 +10,23 @@ import {FilterComponent} from '../../components';
 import styles from './styles';
 import locale from '../../shared/locale';
 import logo from '../../shared/images/logo.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../interfaces/appInterfaces';
+import { getPersonByNameListData } from '../../actions/filterActions';
 
 const AppBarComponent: FC<any> = ({children}) => {
+  const dispatch = useDispatch();
+  const globalData = useSelector((state: State) => state.home.globalData);
   const classes = styles();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDrawer = (anchor: any, open: any) => (event: any) => {
     setIsOpen(open);
   };
+
+  const onChange = (data: any) => {
+    dispatch(getPersonByNameListData(data.target.value, globalData));
+  }
 
   return (
     <div className={classes.root}>
@@ -44,6 +53,7 @@ const AppBarComponent: FC<any> = ({children}) => {
             </div>
             <InputBase
               placeholder={locale.SearchByPersonsName}
+              onChange={onChange}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

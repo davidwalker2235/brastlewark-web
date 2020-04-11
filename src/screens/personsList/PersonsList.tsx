@@ -10,8 +10,8 @@ import {ExpansionPanelComponent} from '../../components';
 import backgroundFog from '../../shared/images/backgroundFog.jpg';
 import { getPersonData, getFriendData } from '../../actions/personActions';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {Modal} from '../../components';
 import { showModal } from '../../actions/modalActions';
+import Typography from '@material-ui/core/Typography';
 
 const PersonsList: FC<ListProps> = ({personListData}) => {
   const classes = styles();
@@ -22,12 +22,10 @@ const PersonsList: FC<ListProps> = ({personListData}) => {
   let listIndex: number = 20;
 
   useEffect(() => {
-    if (!globalData.length) {
+    if (!globalData?.length) {
       dispatch(getGlobalData());
     }
-    if (personListData.length) {
-      setListData(personListData.slice(0, listIndex))
-    }
+    setListData(personListData.slice(0, listIndex))
   },[personListData]);
 
   const handleChange = (personId: number, panelId: string | boolean) => {
@@ -55,7 +53,7 @@ const PersonsList: FC<ListProps> = ({personListData}) => {
       <AppBarComponent>
         <Container className={classes.container}>
           <div className={classes.root}>
-          <InfiniteScroll
+          {listData.length ? <InfiniteScroll
             dataLength={listData.length}
             next={fetchMoreData}
             hasMore={true}
@@ -70,7 +68,10 @@ const PersonsList: FC<ListProps> = ({personListData}) => {
                 onClickFriend={onClickFriend}
               />
             ))}
-            </InfiniteScroll>
+            </InfiniteScroll> :
+            <Typography variant="subtitle1" color='primary'>
+              There aren't citizens on the city
+            </Typography>}
           </div>
         </Container>
       </ AppBarComponent>
