@@ -1,12 +1,36 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, fade } from '@material-ui/core/styles';
 
-const styles = makeStyles({
-    list: {
-        width: 250,
+const styles = makeStyles((theme) => ({
+  root: {
+    width: 300,
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+  },
+  list: {
+    width: 400,
+  },
+    fullList: {
+    width: 'auto',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '20ch',
+      '&:focus': {
+        width: '40ch',
+      },
     },
-        fullList: {
-        width: 'auto',
-    },
-});
+  },
+}));
 
 export default styles;
