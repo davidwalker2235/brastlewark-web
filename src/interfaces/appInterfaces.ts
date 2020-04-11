@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { RouterState } from 'connected-react-router'
 import { ListTypeEnum } from "../shared/enums";
 
@@ -44,6 +45,7 @@ export interface ListInfoData {
 // State
 export interface State {
   loading: LoadingState;
+  modal: ModalState;
   home: HomeProps;
   list: ListProps;
   person: PersonProps;
@@ -56,6 +58,12 @@ export interface Actions {type: string, value?: any};
 // Loading screen
 export interface LoadingState {
   isLoading: boolean
+}
+
+// Modal screen
+export interface ModalState {
+  isOpen: boolean;
+  children: ReactNode;
 }
 
 // Home
@@ -83,6 +91,7 @@ export interface ListRows {
   panelId: number;
   panelExpanded: string | boolean; 
   handleChange: (personId: number, panelId: string | boolean) => void;
+  onClickFriend: (personId: number | undefined) => void;
 }
 
 export interface FriendsData {
@@ -93,4 +102,9 @@ export interface FriendsData {
 // Person
 export interface PersonProps {
   personData: BrastlewarkProp;
+  friendData: BrastlewarkProp;
+}
+
+export interface PersonInfoProps {
+  onClickFriend?: (personId: number | undefined) => void;
 }

@@ -4,7 +4,7 @@ const styles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
-      width: '100%',
+      width: '95%',
       boxShadow: 'none',
       padding: '20px',
       backgroundColor: 'rgba(0, 0, 0, 0.1)'

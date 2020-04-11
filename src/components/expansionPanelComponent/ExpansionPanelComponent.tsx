@@ -9,7 +9,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ListRows } from '../../interfaces/appInterfaces';
 import {PersonInfo} from '../';
 
-const ExpansionPanelComponent: FC<ListRows> = ({data, panelId, panelExpanded, handleChange}) => {
+const ExpansionPanelComponent: FC<ListRows> = ({data,
+                                                panelId,
+                                                panelExpanded,
+                                                handleChange,
+                                                onClickFriend}) => {
   const classes = styles();
   const [panelNumber, setPanelNumber] = useState('')
 
@@ -34,7 +38,7 @@ const ExpansionPanelComponent: FC<ListRows> = ({data, panelId, panelExpanded, ha
       </div>
     </ExpansionPanelSummary>
     <ExpansionPanelDetails className={classes.detailsRoot}>
-      {panelExpanded === panelNumber && <PersonInfo />}
+      {panelExpanded === panelNumber && <PersonInfo onClickFriend={onClickFriend}/>}
     </ExpansionPanelDetails>
   </ExpansionPanel>
 );

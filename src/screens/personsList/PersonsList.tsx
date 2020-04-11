@@ -2,19 +2,20 @@ import React, { FC, useState, useEffect } from 'react';
 import {useDispatch, useSelector, connect} from 'react-redux';
 import { ListProps, Brastlewark } from '../../interfaces/appInterfaces';
 import Container from '@material-ui/core/Container';
-import {AppBarComponent} from '../../components';
+import {AppBarComponent, PersonInfo} from '../../components';
 import {State} from '../../interfaces/appInterfaces';
 import styles from './styles';
 import { getGlobalData } from '../../actions/homeActions';
 import {ExpansionPanelComponent} from '../../components';
 import backgroundFog from '../../shared/images/backgroundFog.jpg';
-import { getPersonData } from '../../actions/personActions';
+import { getPersonData, getFriendData } from '../../actions/personActions';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import {Modal} from '../../components';
+import { showModal } from '../../actions/modalActions';
 
 const PersonsList: FC<ListProps> = ({personListData}) => {
   const classes = styles();
   const dispatch = useDispatch();
-  // const personsListData = useSelector((state: State) => state.list.personListData);
   const globalData = useSelector((state: State) => state.home.globalData);
   const [expandedPanel, setExpandedPanel] = useState<string | boolean>(false);
   const [listData, setListData] = useState<Brastlewark[]>([]);
@@ -41,6 +42,13 @@ const PersonsList: FC<ListProps> = ({personListData}) => {
     setListData(newListData);
   };
 
+  const onClickFriend = (friendId: number | undefined) => {
+    dispatch(getFriendData(friendId, globalData));
+    dispatch(showModal(
+      <PersonInfo />
+    ));
+  }
+
   return (
     <div>
       <img alt='personListBGImage' className={classes.psBackground} src={backgroundFog} />
@@ -59,6 +67,7 @@ const PersonsList: FC<ListProps> = ({personListData}) => {
                 panelId={index}
                 panelExpanded={expandedPanel}
                 handleChange={handleChange}
+                onClickFriend={onClickFriend}
               />
             ))}
             </InfiniteScroll>

@@ -1,7 +1,7 @@
 import { put, takeLatest, all, call } from 'redux-saga/effects';
 import {GET_PERSON_LIST_DATA, GET_FRIENDS_LIST_DATA} from '../constants/constants';
 import { getPersonsList, getFriendsList } from '../shared/utils';
-import { hideLoading } from '../actions/loadingActions';
+import { hideLoading, showLoading } from '../actions/loadingActions';
 import { setPersonListData, setFriendsListData } from '../actions/listActions';
 import { Actions, ListInfoData, FriendsData } from '../interfaces/appInterfaces';
 
@@ -16,6 +16,7 @@ const getFriendsListData = ({value}: Actions): FriendsData[] => {
 // SAGAS
 function* fetchGetPersonListData(data: Actions) {
   try {
+    yield put(showLoading());
     const listData: ListInfoData = yield call(getPersonsListData, data);
     yield put(setPersonListData(listData));
     yield put(hideLoading());
@@ -26,6 +27,7 @@ function* fetchGetPersonListData(data: Actions) {
 
 function* fetchGetFriendsListData(data: Actions) {
   try {
+    yield put(showLoading());
     const friendsListData: FriendsData[] = yield call(getFriendsListData, data);
     yield put(setFriendsListData(friendsListData));
     yield put(hideLoading());
