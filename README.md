@@ -34,19 +34,19 @@ List frontend application for the visualization of characters of Brastlewark cit
 
 #### Main Screen
 
-* To enter to app click on 'Enter to city' button
+* To enter to app click on 'Enter to city' button </br>
 <img src="https://live.staticflickr.com/65535/49766270988_4024cab072.jpg" width="500" height="371" alt="brastlewark-main-screen"></br></br>
 
-* You can filter the list writting the name or throw the filter section
+* You can filter the list writting the name or throw the filter section </br>
 <img src="https://live.staticflickr.com/65535/49767132757_58f616128f.jpg" width="500" height="377" alt="list-screen"></br></br>
 
-* Filter section:
+* Filter section: </br>
 <img src="https://live.staticflickr.com/65535/49766283718_30e5057e7e.jpg" width="500" height="372" alt="filter-section"></br></br>
 
-* Clicking on one row you can see the citizen information
+* Clicking on one row you can see the citizen information </br>
 <img src="https://live.staticflickr.com/65535/49767132722_0db9bf3000.jpg" width="500" height="376" alt="info-creen"></br></br>
 
-* Clicking on one friend image inside the citizen section a modal will popup showing the friend information
+* Clicking on one friend image inside the citizen section a modal will popup showing the friend information </br>
 <img src="https://live.staticflickr.com/65535/49767132692_c949b24240.jpg" width="500" height="374" alt="friend-screen"></br></br>
 
 
