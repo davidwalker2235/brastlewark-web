@@ -1,8 +1,8 @@
 List frontend application for the visualization of characters of Brastlewark city
 
-## Brastlewark Web app
+# Brastlewark Web app
 
-####To run the project:
+###To run the project:
 
 * Clone the project:
 
@@ -18,7 +18,7 @@ List frontend application for the visualization of characters of Brastlewark cit
 
 * The app will be oppened in your default browser with localhost:3000
 
-####Used technology
+###Used technology
 
 
 * React (https://es.reactjs.org/)
@@ -29,6 +29,26 @@ List frontend application for the visualization of characters of Brastlewark cit
 * React router (https://www.npmjs.com/package/react-router)
 * Material UI (https://material-ui.com/)
 * React infinite scroll (https://www.npmjs.com/package/react-infinite-scroll-component)
+
+###Screens:
+
+####Main Screen
+
+* To enter to app click on 'Enter to city' button
+<img src="https://live.staticflickr.com/65535/49766270988_4024cab072.jpg" width="500" height="371" alt="brastlewark-main-screen"></br></br>
+
+* You can filter the list writting the name or throw the filter section
+<img src="https://live.staticflickr.com/65535/49767132757_58f616128f.jpg" width="500" height="377" alt="list-screen"></br></br>
+
+* Filter section:
+<img src="https://live.staticflickr.com/65535/49766283718_30e5057e7e.jpg" width="500" height="372" alt="filter-section"></br></br>
+
+* Clicking on one row you can see the citizen information
+<img src="https://live.staticflickr.com/65535/49767132722_0db9bf3000.jpg" width="500" height="376" alt="info-creen"></br></br>
+
+* Clicking on one friend image inside the citizen section a modal will popup showing the friend information
+<img src="https://live.staticflickr.com/65535/49767132692_c949b24240.jpg" width="500" height="374" alt="friend-screen"></br></br>
+
 
 ## About me
 
