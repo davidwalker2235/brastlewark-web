@@ -18,7 +18,7 @@ List frontend application for the visualization of characters of Brastlewark cit
 
 * The app will be oppened in your default browser with localhost:3000
 
-###Used technology
+### Used technology
 
 
 * React (https://es.reactjs.org/)
@@ -30,9 +30,9 @@ List frontend application for the visualization of characters of Brastlewark cit
 * Material UI (https://material-ui.com/)
 * React infinite scroll (https://www.npmjs.com/package/react-infinite-scroll-component)
 
-###Screens:
+### Screens:
 
-####Main Screen
+#### Main Screen
 
 * To enter to app click on 'Enter to city' button
 <img src="https://live.staticflickr.com/65535/49766270988_4024cab072.jpg" width="500" height="371" alt="brastlewark-main-screen"></br></br>
