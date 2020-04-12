@@ -37,13 +37,32 @@ export const getFriendsList = (friendsList: string[], brastlewarkData: Brastlewa
 }
 
 export const getFilterData = (globalData: Brastlewark[]): FilterData => {
-  let hairColors: string[] = [];
+  let hair_color: string[] = [];
   let professions: string[] = [];
+  let ageMaxValue: number = 0;
+  let ageMinValue: number = 0;
+  let weightMaxValue: number = 0;
+  let weightMinValue: number = 0;
+  let heightMaxValue: number = 0;
+  let heightMinValue: number = 0;
 
   globalData.forEach((person: Brastlewark) => {
     professions = Array.from(new Set(professions.concat(...person?.professions || [])));
-    !hairColors.includes(person.hair_color) && hairColors.push(person.hair_color);
+    !hair_color.includes(person.hair_color) && hair_color.push(person.hair_color);
+    if (Math.round(person.age) > ageMaxValue) ageMaxValue = Math.round(person.age);
+    if (Math.round(person.age) < ageMaxValue) ageMinValue = Math.round(person.age);
+    if (Math.round(person.weight) > weightMaxValue) weightMaxValue = Math.round(person.weight);
+    if (Math.round(person.weight) < weightMaxValue) weightMinValue = Math.round(person.weight);
+    if (Math.round(person.height) > heightMaxValue) heightMaxValue = Math.round(person.height);
+    if (Math.round(person.height) < heightMaxValue) heightMinValue = Math.round(person.height);
   });
 
-  return {hairColors, professions}
+  return {hair_color, professions, ranges: {
+    ageMaxValue,
+    ageMinValue,
+    weightMaxValue,
+    weightMinValue,
+    heightMaxValue,
+    heightMinValue
+  }}
 }

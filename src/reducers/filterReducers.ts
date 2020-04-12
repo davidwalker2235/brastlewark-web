@@ -10,7 +10,8 @@ export default function filterReducer(state: FilterState = initialState, action:
     case SET_FILTER_DATA:
       const data = {
         professions: action.value.professions,
-        hairColors: action.value.hairColors };
+        hair_color: action.value.hair_color,
+        ranges: action.value.ranges };
 
       return { ...state, filterData: data };
     default:

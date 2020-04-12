@@ -13,5 +13,5 @@ export enum PersonEnum {
   HEIGHT = 'height',
   HAIR_COLOR = 'hair_color',
   PROFESSION = 'professions',
-  FRIENDS = 'friends'
+  FRIENDS = 'friends',
 }

@@ -8,5 +8,5 @@ export const getPersonByNameListData = (name: string, globalData: Brastlewark[])
 export const getFilterData = (globalData: Brastlewark[]): Actions => (
   {type: GET_FILTER_DATA, value: globalData});
 
-export const setFilterData = ({professions, hairColors}: FilterData): Actions => (
-  {type: SET_FILTER_DATA, value: {professions, hairColors}});
+export const setFilterData = ({professions, hair_color, ranges}: FilterData): Actions => (
+  {type: SET_FILTER_DATA, value: {professions, hair_color, ranges}});

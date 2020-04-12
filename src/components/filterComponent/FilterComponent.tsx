@@ -17,20 +17,59 @@ import locale from '../../shared/locale';
 import { useSelector, useDispatch } from 'react-redux';
 import { State, FilterData, Brastlewark } from '../../interfaces/appInterfaces';
 import { getFilterData } from '../../actions/filterActions';
+import { PersonEnum } from '../../shared/enums';
+
+interface SliderData {
+  [key: string]: any;
+};
+
+interface MultiselectData {
+  [key: string]: string[];
+};
 
 const FilterComponent: FC<any> = () => {
   const dispatch = useDispatch();
   const filterData: FilterData | undefined = useSelector((state: State) => state.filter.filterData);
   const globalData: Brastlewark[] = useSelector((state: State) => state.home.globalData);
-  useEffect(() => {
-    !filterData && dispatch(getFilterData(globalData));
+  const [slidersData, setSlidersData] = useState<SliderData>({
+    [PersonEnum.AGE]: [],
+    [PersonEnum.WEIGHT]: [],
+    [PersonEnum.HEIGHT]: []
   });
-
-  const [value, setValue] = useState<number[]>([20, 37]);
+  const [multiSelectValue, setMultiSelectValue] = useState<MultiselectData>({
+    [PersonEnum.HAIR_COLOR]: [],
+    [PersonEnum.PROFESSION]: []
+  });
   const [personName, setPersonName] = useState<string[]>([]);
   const classes = styles();
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
+
+  useEffect(() => {
+    !filterData && dispatch(getFilterData(globalData));
+    if (filterData &&
+        !slidersData[PersonEnum.AGE].length &&
+        !slidersData[PersonEnum.WEIGHT].length &&
+        !slidersData[PersonEnum.HEIGHT].length
+        ) {
+          setSlidersData({
+            ...slidersData, 
+            [PersonEnum.AGE]: [
+              filterData.ranges[`${PersonEnum.AGE}MinValue`],
+              filterData.ranges[`${PersonEnum.AGE}MaxValue`]
+            ],
+            [PersonEnum.WEIGHT]: [
+              filterData.ranges[`${PersonEnum.WEIGHT}MinValue`],
+              filterData.ranges[`${PersonEnum.WEIGHT}MaxValue`]
+            ],
+            [PersonEnum.HEIGHT]: [
+              filterData.ranges[`${PersonEnum.HEIGHT}MinValue`],
+              filterData.ranges[`${PersonEnum.HEIGHT}MaxValue`]
+            ],
+            }
+          )
+    }
+  });
 
   const MenuProps = {
     PaperProps: {
@@ -41,49 +80,48 @@ const FilterComponent: FC<any> = () => {
     },
   };
 
-  const handleChange = (event: any, newValue: number | number[]) => {
-    setValue(newValue as number[]);
+  const handleChanges = (event: any, newValue: number | number[], sliderType: PersonEnum) => {
+    setSlidersData({...slidersData, [sliderType]: newValue as number[]});
   };
 
-  const valuetext = (value: number) => {
-    return `${value}°C`;
-  }
-
-  const renderSlider = () => (
+  const renderSlider = (sliderType: PersonEnum) => (
     <div className={classes.root}>
-      <Typography id="range-slider" gutterBottom>
-        Age range
+      <Typography id={`range-slider-title-${sliderType}`} gutterBottom>
+        {locale[sliderType]}
       </Typography>
       <Slider
-        value={value}
-        onChange={handleChange}
+        name={sliderType}
+        value={slidersData[sliderType]}
+        onChange={(event, value) => handleChanges(event, value, sliderType)}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
-        getAriaValueText={valuetext}
+        max={filterData?.ranges[`${sliderType}MaxValue`]}
+        min={filterData?.ranges[`${sliderType}MinValue`]}
       />
     </div>
   );
 
-  const handleSelectMultipleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPersonName(event.target.value as string[]);
+  const handleSelectMultipleChange = (event: React.ChangeEvent<{ value: unknown }>, multiSelectOption: PersonEnum) => {
+    debugger;
+    setMultiSelectValue({...multiSelectValue, [multiSelectOption]: event.target.value as string[]});
   };
 
-  const renderMultiselect = (dataOption: string) => (
+  const renderMultiselect = (dataOption: PersonEnum) => (
     <FormControl className={classes.formControl}>
-      <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
+      <InputLabel id={`mutiple-input-label-${dataOption}`}>{locale[dataOption]}</InputLabel>
       <Select
-        labelId="demo-mutiple-checkbox-label"
-        id="demo-mutiple-checkbox"
+        labelId={`mutiple-checkbox-label-${dataOption}`}
+        id={`mutiple-checkbox-${dataOption}`}
         multiple
-        value={personName}
-        onChange={handleSelectMultipleChange}
+        value={multiSelectValue[dataOption]}
+        onChange={(event) => handleSelectMultipleChange(event, dataOption)}
         input={<Input />}
         renderValue={(selected) => (selected as string[]).join(', ')}
         MenuProps={MenuProps}
       >
-        {filterData && filterData[dataOption].map((name) => (
+        {filterData && filterData[dataOption].map((name: any) => (
           <MenuItem key={name} value={name}>
-            <Checkbox checked={personName.indexOf(name) > -1} />
+            <Checkbox checked={multiSelectValue[dataOption].indexOf(name) > -1} />
             <ListItemText primary={name} />
           </MenuItem>
         ))}
@@ -91,35 +129,53 @@ const FilterComponent: FC<any> = () => {
     </FormControl>
   )
 
+  const onChangeName = (event: any) => {
+    setPersonName(event.target.value)
+  }
+
+  const onClickFilter = () => {
+    debugger;
+  }
+
   return (
     <div
       className={classes.list}
       role="presentation"
     >
       <List>
-        <ListItem key="sdfsdfsdf">
+        <ListItem key="filterTitle">
           <ListItemText primary={locale.SelectToFilter} />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem key="name">
-          <TextField id="standard-basic" label="Standard" />
+        <ListItem key={PersonEnum.NAME}>
+          <TextField
+            className={classes.nameImput}
+            id="standard-basic"
+            label={locale.Name}
+            onChange={onChangeName} />
         </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderSlider()}
+        <ListItem key={PersonEnum.AGE}>
+          {renderSlider(PersonEnum.AGE)}
         </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderSlider()}
+        <ListItem key={PersonEnum.WEIGHT}>
+          {renderSlider(PersonEnum.WEIGHT)}
         </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderSlider()}
+        <ListItem key={PersonEnum.HEIGHT}>
+          {renderSlider(PersonEnum.HEIGHT)}
         </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderMultiselect('hairColors')}
+        <ListItem key={PersonEnum.HAIR_COLOR}>
+          {renderMultiselect(PersonEnum.HAIR_COLOR)}
         </ListItem>
-        <ListItem key="sdfsdfsdf">
-          {renderMultiselect('professions')}
+        <ListItem key={PersonEnum.PROFESSION}>
+          {renderMultiselect(PersonEnum.PROFESSION)}
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem className={classes.filterButton} button key="filterButton" onClick={onClickFilter}>
+          <ListItemText className={classes.buttonText} primary={locale.Filter} />
         </ListItem>
       </List>
     </div>

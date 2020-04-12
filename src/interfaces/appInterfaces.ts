@@ -111,10 +111,20 @@ export interface PersonInfoProps {
 }
 
 // Filter
+export interface filterRanges {
+  ageMaxValue: number;
+  ageMinValue: number;
+  weightMaxValue: number;
+  weightMinValue: number;
+  heightMaxValue: number;
+  heightMinValue: number;
+  [key: string]: number;
+}
 export interface FilterData {
-  professions: string[],
-  hairColors: string[],
-  [key: string]: string[]
+  professions: string[];
+  hair_color: string[];
+  ranges: filterRanges;
+  [key: string]: any;
 }
 export interface FilterState {
   filterData: FilterData | undefined
