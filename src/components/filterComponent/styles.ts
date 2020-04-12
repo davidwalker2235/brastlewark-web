@@ -45,6 +45,14 @@ const styles = makeStyles((theme) => ({
     color: 'white'
     }
   },
+  clearFilterButton: {
+    color: 'white',
+    backgroundColor: 'red',
+    '&:hover': {
+      backgroundColor: 'orange !important',
+    color: 'white'
+    }
+  },
   buttonText: {
     display: 'flex',
     alignItems: 'center',

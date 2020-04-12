@@ -126,8 +126,19 @@ export interface FilterData {
   ranges: filterMaxMinValues;
   [key: string]: any;
 }
+
+export interface MultiSelectValues {
+  [PersonEnum.HAIR_COLOR]: string[],
+  [PersonEnum.PROFESSION]: string[],
+  [key: string]: string[];
+}
+
 export interface FilterState {
-  filterData: FilterData | undefined
+  personName: string;
+  filterData?: FilterData | undefined;
+  slidersData: FilterRanges;
+  multiSelectValue: MultiSelectValues;
+  isFiltered?: boolean
 }
 
 export interface FilterRanges {

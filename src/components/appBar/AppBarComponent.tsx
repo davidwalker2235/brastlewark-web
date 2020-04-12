@@ -11,21 +11,40 @@ import styles from './styles';
 import locale from '../../shared/locale';
 import logo from '../../shared/images/logo.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../interfaces/appInterfaces';
-import { getPersonByNameListData } from '../../actions/filterActions';
+import { State, SelectedFilterData } from '../../interfaces/appInterfaces';
+import { getPersonByNameListData, getListDataFromFilter, removeClearFilters } from '../../actions/filterActions';
+import { Button } from '@material-ui/core';
+import { PersonEnum } from '../../shared/enums';
 
 const AppBarComponent: FC<any> = ({children}) => {
   const dispatch = useDispatch();
+  const filterData = useSelector((state: State) => state.filter.filterData);
   const globalData = useSelector((state: State) => state.home.globalData);
+  const isFiltered = useSelector((state: State) => state.filter.isFiltered);
   const classes = styles();
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDrawer = (anchor: any, open: any) => (event: any) => {
+  const toggleDrawer = (anchor: any, open: boolean) => (event: any) => {
     setIsOpen(open);
   };
 
   const onChange = (data: any) => {
     dispatch(getPersonByNameListData(data.target.value, globalData));
+  }
+
+  const onClickClearFilter = () => {
+    const resetSlidersData = {
+      [PersonEnum.AGE]: [filterData?.ranges.ageMinValue || 0, filterData?.ranges.ageMaxValue || 100],
+      [PersonEnum.WEIGHT]: [filterData?.ranges.weightMinValue || 0, filterData?.ranges.weightMaxValue || 100],
+      [PersonEnum.HEIGHT]: [filterData?.ranges.heightMinValue || 0, filterData?.ranges.heightMaxValue || 100]
+    }
+    dispatch(getListDataFromFilter({
+      [PersonEnum.NAME]: '',
+      [PersonEnum.HAIR_COLOR]: [],
+      [PersonEnum.PROFESSION]: [],
+      ranges: resetSlidersData
+    } as SelectedFilterData, globalData));
+    dispatch(removeClearFilters());
   }
 
   return (
@@ -47,6 +66,9 @@ const AppBarComponent: FC<any> = ({children}) => {
           <div className={classes.title}>
             <img className={classes.logoImageTitle} alt='CoverImage' src={logo} />
           </div>
+          {isFiltered && <Button variant="contained" color="secondary" onClick={onClickClearFilter}>
+            {locale.ClearFilters}
+          </Button>}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

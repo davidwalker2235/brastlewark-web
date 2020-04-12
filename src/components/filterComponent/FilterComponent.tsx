@@ -15,57 +15,58 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import locale from '../../shared/locale';
 import { useSelector, useDispatch } from 'react-redux';
-import { State, FilterData, Brastlewark, SelectedFilterData, FilterRanges } from '../../interfaces/appInterfaces';
-import { getFilterData, getListDataFromFilter } from '../../actions/filterActions';
+import { State, FilterData, Brastlewark, SelectedFilterData, FilterRanges, MultiSelectValues, FilterState } from '../../interfaces/appInterfaces';
+import { getFilterData, getListDataFromFilter, setFilterDataFromFilter, removeClearFilters } from '../../actions/filterActions';
 import { PersonEnum } from '../../shared/enums';
 
 interface MultiselectData {
   [key: string]: string[];
 };
 
-const FilterComponent: FC<any> = () => {
+const emptySliderData: FilterRanges = {
+  [PersonEnum.AGE]: [],
+  [PersonEnum.WEIGHT]: [],
+  [PersonEnum.HEIGHT]: []
+}
+
+const emptyMultiSelectValue: MultiselectData = {
+  [PersonEnum.HAIR_COLOR]: [],
+  [PersonEnum.PROFESSION]: []
+}
+
+const FilterComponent: FC<{}> = () => {
   const dispatch = useDispatch();
+  const [mounted, setMounted] = useState<boolean>(false); 
   const filterData: FilterData | undefined = useSelector((state: State) => state.filter.filterData);
   const globalData: Brastlewark[] = useSelector((state: State) => state.home.globalData);
-  const [slidersData, setSlidersData] = useState<FilterRanges>({
-    [PersonEnum.AGE]: [],
-    [PersonEnum.WEIGHT]: [],
-    [PersonEnum.HEIGHT]: []
-  });
-  const [multiSelectValue, setMultiSelectValue] = useState<MultiselectData>({
-    [PersonEnum.HAIR_COLOR]: [],
-    [PersonEnum.PROFESSION]: []
-  });
-  const [personName, setPersonName] = useState<string>('');
+  const sliderData: FilterRanges = useSelector((state: State) => state.filter.slidersData);
+  const multiSelectValue: MultiSelectValues = useSelector((state: State) => state.filter.multiSelectValue);
+  const personName: string = useSelector((state: State) => state.filter.personName);
+  const isFiltered: boolean | undefined = useSelector((state: State) => state.filter.isFiltered);
+  const [stateSlidersData, setStateSlidersData] = useState<FilterRanges>(emptySliderData);
+  const [stateMultiSelectValue, setStateMultiSelectValue] = useState<MultiselectData>(emptyMultiSelectValue);
+  const [statePersonName, setStatePersonName] = useState<string>('');
   const classes = styles();
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
 
   useEffect(() => {
     !filterData && dispatch(getFilterData(globalData));
-    if (filterData &&
-        !slidersData[PersonEnum.AGE].length &&
-        !slidersData[PersonEnum.WEIGHT].length &&
-        !slidersData[PersonEnum.HEIGHT].length
-        ) {
-          setSlidersData({
-            ...slidersData, 
-            [PersonEnum.AGE]: [
-              filterData.ranges[`${PersonEnum.AGE}MinValue`],
-              filterData.ranges[`${PersonEnum.AGE}MaxValue`]
-            ],
-            [PersonEnum.WEIGHT]: [
-              filterData.ranges[`${PersonEnum.WEIGHT}MinValue`],
-              filterData.ranges[`${PersonEnum.WEIGHT}MaxValue`]
-            ],
-            [PersonEnum.HEIGHT]: [
-              filterData.ranges[`${PersonEnum.HEIGHT}MinValue`],
-              filterData.ranges[`${PersonEnum.HEIGHT}MaxValue`]
-            ],
-            }
-          )
+    if (!mounted && filterData &&
+       !statePersonName.length &&
+       !stateSlidersData[PersonEnum.AGE].length &&
+       !stateSlidersData[PersonEnum.WEIGHT].length &&
+       !stateSlidersData[PersonEnum.HEIGHT].length &&
+       !stateMultiSelectValue[PersonEnum.HAIR_COLOR].length &&
+       !stateMultiSelectValue[PersonEnum.PROFESSION].length)
+      {
+        setStateSlidersData(sliderData);
+        setStateMultiSelectValue(multiSelectValue);
+        setStatePersonName(personName);
+        setMounted(true);
+      }
     }
-  });
+  );
 
   const MenuProps = {
     PaperProps: {
@@ -77,7 +78,7 @@ const FilterComponent: FC<any> = () => {
   };
 
   const handleChanges = (event: any, newValue: number | number[], sliderType: PersonEnum) => {
-    setSlidersData({...slidersData, [sliderType]: newValue as number[]});
+    setStateSlidersData({...stateSlidersData, [sliderType]: newValue as number[]});
   };
 
   const renderSlider = (sliderType: PersonEnum) => (
@@ -87,7 +88,7 @@ const FilterComponent: FC<any> = () => {
       </Typography>
       <Slider
         name={sliderType}
-        value={slidersData[sliderType]}
+        value={stateSlidersData[sliderType]}
         onChange={(event, value) => handleChanges(event, value, sliderType)}
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
@@ -98,7 +99,7 @@ const FilterComponent: FC<any> = () => {
   );
 
   const handleSelectMultipleChange = (event: React.ChangeEvent<{ value: unknown }>, multiSelectOption: PersonEnum) => {
-    setMultiSelectValue({...multiSelectValue, [multiSelectOption]: event.target.value as string[]});
+    setStateMultiSelectValue({...stateMultiSelectValue, [multiSelectOption]: event.target.value as string[]});
   };
 
   const renderMultiselect = (dataOption: PersonEnum) => (
@@ -108,7 +109,7 @@ const FilterComponent: FC<any> = () => {
         labelId={`mutiple-checkbox-label-${dataOption}`}
         id={`mutiple-checkbox-${dataOption}`}
         multiple
-        value={multiSelectValue[dataOption]}
+        value={stateMultiSelectValue[dataOption]}
         onChange={(event) => handleSelectMultipleChange(event, dataOption)}
         input={<Input />}
         renderValue={(selected) => (selected as string[]).join(', ')}
@@ -116,7 +117,7 @@ const FilterComponent: FC<any> = () => {
       >
         {filterData && filterData[dataOption].map((name: any) => (
           <MenuItem key={name} value={name}>
-            <Checkbox checked={multiSelectValue[dataOption].indexOf(name) > -1} />
+            <Checkbox checked={stateMultiSelectValue[dataOption].indexOf(name) > -1} />
             <ListItemText primary={name} />
           </MenuItem>
         ))}
@@ -125,16 +126,41 @@ const FilterComponent: FC<any> = () => {
   )
 
   const onChangeName = (event: any) => {
-    setPersonName(event.target.value)
+    setStatePersonName(event.target.value)
   }
 
   const onClickFilter = () => {
+    dispatch(setFilterDataFromFilter(
+      {
+        personName: statePersonName,
+        slidersData: stateSlidersData,
+        multiSelectValue: stateMultiSelectValue
+      } as FilterState
+    ));
     dispatch(getListDataFromFilter({
-      [PersonEnum.NAME]: personName,
-      [PersonEnum.HAIR_COLOR]: multiSelectValue[PersonEnum.HAIR_COLOR],
-      [PersonEnum.PROFESSION]: multiSelectValue[PersonEnum.PROFESSION],
-      ranges: slidersData
+      [PersonEnum.NAME]: statePersonName,
+      [PersonEnum.HAIR_COLOR]: stateMultiSelectValue[PersonEnum.HAIR_COLOR],
+      [PersonEnum.PROFESSION]: stateMultiSelectValue[PersonEnum.PROFESSION],
+      ranges: stateSlidersData
     } as SelectedFilterData, globalData));
+  }
+
+  const onClickClearFilter = () => {
+    const resetSlidersData = {
+      [PersonEnum.AGE]: [filterData?.ranges.ageMinValue || 0, filterData?.ranges.ageMaxValue || 100],
+      [PersonEnum.WEIGHT]: [filterData?.ranges.weightMinValue || 0, filterData?.ranges.weightMaxValue || 100],
+      [PersonEnum.HEIGHT]: [filterData?.ranges.heightMinValue || 0, filterData?.ranges.heightMaxValue || 100]
+    }
+    setStatePersonName('');
+    setStateSlidersData(resetSlidersData);
+    setStateMultiSelectValue(emptyMultiSelectValue);
+    dispatch(getListDataFromFilter({
+      [PersonEnum.NAME]: '',
+      [PersonEnum.HAIR_COLOR]: [],
+      [PersonEnum.PROFESSION]: [],
+      ranges: resetSlidersData
+    } as SelectedFilterData, globalData));
+    dispatch(removeClearFilters());
   }
 
   return (
@@ -154,7 +180,8 @@ const FilterComponent: FC<any> = () => {
             className={classes.nameImput}
             id="standard-basic"
             label={locale.Name}
-            onChange={onChangeName} />
+            onChange={onChangeName}
+            value={statePersonName} />
         </ListItem>
         <ListItem key={PersonEnum.AGE}>
           {renderSlider(PersonEnum.AGE)}
@@ -178,6 +205,12 @@ const FilterComponent: FC<any> = () => {
           <ListItemText className={classes.buttonText} primary={locale.Filter} />
         </ListItem>
       </List>
+      <Divider />
+      {isFiltered && <List>
+        <ListItem className={classes.clearFilterButton} button key="filterButton" onClick={onClickClearFilter}>
+          <ListItemText className={classes.buttonText} primary={locale.ClearFilters} />
+        </ListItem>
+      </List>}
     </div>
   );
 }

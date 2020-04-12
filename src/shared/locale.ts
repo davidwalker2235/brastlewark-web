@@ -23,6 +23,7 @@ const locale = {
   Friends: 'Friends',
   NoFriends: 'Person with no friends, maybe he is an informatic',
   SelectToFilter: 'Select to filter',
+  ClearFilters: 'Clear filters'
 }
 
 export default locale as {[key: string]: any};

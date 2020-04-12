@@ -1,4 +1,4 @@
-import { ListData, ListInfoData, Brastlewark, FriendsData, FilterData, SelectedFilterData, Actions } from "../interfaces/appInterfaces";
+import { ListData, ListInfoData, Brastlewark, FriendsData, FilterData, Actions } from "../interfaces/appInterfaces";
 
 export const getProfessions = (brastlewarkData: Brastlewark[]): ListInfoData => {
   let professions: string[] = [];
@@ -75,14 +75,18 @@ export const getListDataFromFilter = ({value}: Actions) => {
     weight,
     height,
   } = ranges;
-  const xxx: ListData[] = globalData.filter((person: Brastlewark)=> {
-    let hasConditions: boolean = false;
+  let list: Brastlewark[] = globalData.filter((person: Brastlewark)=> person.name.toUpperCase().includes(name.toUpperCase()))
+    .filter((person: Brastlewark) => person.age >= age[0] && person.age <= age[1])
+    .filter((person: Brastlewark) => person.weight >= weight[0] && person.weight <= weight[1])
+    .filter((person: Brastlewark) => person.height >= height[0] && person.height <= height[1])
+  
+  if (hair_color.length) {
+    list = list.filter((person: Brastlewark) => hair_color.includes(person.hair_color))
+  }
 
-    hasConditions = person.name.toUpperCase().includes(name.toUpperCase());
-    if (hair_color.legth) hasConditions = hair_color.includes(person.hair_color)
+  if (professions.length) {
+    list = list.filter((person: Brastlewark) => person.professions.filter((profession: string) => professions.includes(profession)).length > 0)
+  }
 
-    return hasConditions;
-  });
-
-  return xxx
+  return list
 }
