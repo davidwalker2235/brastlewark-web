@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { RouterState } from 'connected-react-router'
-import { ListTypeEnum } from "../shared/enums";
+import { ListTypeEnum, PersonEnum } from "../shared/enums";
 
 // Commons
 export interface Brastlewark {
@@ -111,7 +111,7 @@ export interface PersonInfoProps {
 }
 
 // Filter
-export interface filterRanges {
+export interface filterMaxMinValues {
   ageMaxValue: number;
   ageMinValue: number;
   weightMaxValue: number;
@@ -123,9 +123,23 @@ export interface filterRanges {
 export interface FilterData {
   professions: string[];
   hair_color: string[];
-  ranges: filterRanges;
+  ranges: filterMaxMinValues;
   [key: string]: any;
 }
 export interface FilterState {
   filterData: FilterData | undefined
+}
+
+export interface FilterRanges {
+  [PersonEnum.AGE]: number[],
+  [PersonEnum.WEIGHT]: number[],
+  [PersonEnum.HEIGHT]: number[],
+  [key: string]: number[];
+}
+
+export interface SelectedFilterData {
+  [PersonEnum.NAME]: string;
+  [PersonEnum.HAIR_COLOR]: string[];
+  [PersonEnum.PROFESSION]: string[];
+  ranges: FilterRanges;
 }

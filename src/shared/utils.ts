@@ -1,4 +1,4 @@
-import { ListData, ListInfoData, Brastlewark, FriendsData, FilterData } from "../interfaces/appInterfaces";
+import { ListData, ListInfoData, Brastlewark, FriendsData, FilterData, SelectedFilterData, Actions } from "../interfaces/appInterfaces";
 
 export const getProfessions = (brastlewarkData: Brastlewark[]): ListInfoData => {
   let professions: string[] = [];
@@ -40,21 +40,21 @@ export const getFilterData = (globalData: Brastlewark[]): FilterData => {
   let hair_color: string[] = [];
   let professions: string[] = [];
   let ageMaxValue: number = 0;
-  let ageMinValue: number = 0;
+  let ageMinValue: number = 1000000;
   let weightMaxValue: number = 0;
-  let weightMinValue: number = 0;
+  let weightMinValue: number = 1000000;
   let heightMaxValue: number = 0;
-  let heightMinValue: number = 0;
+  let heightMinValue: number = 1000000;
 
   globalData.forEach((person: Brastlewark) => {
     professions = Array.from(new Set(professions.concat(...person?.professions || [])));
     !hair_color.includes(person.hair_color) && hair_color.push(person.hair_color);
     if (Math.round(person.age) > ageMaxValue) ageMaxValue = Math.round(person.age);
-    if (Math.round(person.age) < ageMaxValue) ageMinValue = Math.round(person.age);
+    if (Math.round(person.age) < ageMinValue) ageMinValue = Math.round(person.age);
     if (Math.round(person.weight) > weightMaxValue) weightMaxValue = Math.round(person.weight);
-    if (Math.round(person.weight) < weightMaxValue) weightMinValue = Math.round(person.weight);
+    if (Math.round(person.weight) < weightMinValue) weightMinValue = Math.round(person.weight);
     if (Math.round(person.height) > heightMaxValue) heightMaxValue = Math.round(person.height);
-    if (Math.round(person.height) < heightMaxValue) heightMinValue = Math.round(person.height);
+    if (Math.round(person.height) < heightMinValue) heightMinValue = Math.round(person.height);
   });
 
   return {hair_color, professions, ranges: {
@@ -64,5 +64,25 @@ export const getFilterData = (globalData: Brastlewark[]): FilterData => {
     weightMinValue,
     heightMaxValue,
     heightMinValue
-  }}
+  }};
+};
+
+export const getListDataFromFilter = ({value}: Actions) => {
+  const {filterData, globalData} = value;
+  const { name, hair_color, professions, ranges } = filterData;
+  const {
+    age,
+    weight,
+    height,
+  } = ranges;
+  const xxx: ListData[] = globalData.filter((person: Brastlewark)=> {
+    let hasConditions: boolean = false;
+
+    hasConditions = person.name.toUpperCase().includes(name.toUpperCase());
+    if (hair_color.legth) hasConditions = hair_color.includes(person.hair_color)
+
+    return hasConditions;
+  });
+
+  return xxx
 }

@@ -15,13 +15,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import locale from '../../shared/locale';
 import { useSelector, useDispatch } from 'react-redux';
-import { State, FilterData, Brastlewark } from '../../interfaces/appInterfaces';
-import { getFilterData } from '../../actions/filterActions';
+import { State, FilterData, Brastlewark, SelectedFilterData, FilterRanges } from '../../interfaces/appInterfaces';
+import { getFilterData, getListDataFromFilter } from '../../actions/filterActions';
 import { PersonEnum } from '../../shared/enums';
-
-interface SliderData {
-  [key: string]: any;
-};
 
 interface MultiselectData {
   [key: string]: string[];
@@ -31,7 +27,7 @@ const FilterComponent: FC<any> = () => {
   const dispatch = useDispatch();
   const filterData: FilterData | undefined = useSelector((state: State) => state.filter.filterData);
   const globalData: Brastlewark[] = useSelector((state: State) => state.home.globalData);
-  const [slidersData, setSlidersData] = useState<SliderData>({
+  const [slidersData, setSlidersData] = useState<FilterRanges>({
     [PersonEnum.AGE]: [],
     [PersonEnum.WEIGHT]: [],
     [PersonEnum.HEIGHT]: []
@@ -40,7 +36,7 @@ const FilterComponent: FC<any> = () => {
     [PersonEnum.HAIR_COLOR]: [],
     [PersonEnum.PROFESSION]: []
   });
-  const [personName, setPersonName] = useState<string[]>([]);
+  const [personName, setPersonName] = useState<string>('');
   const classes = styles();
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -102,7 +98,6 @@ const FilterComponent: FC<any> = () => {
   );
 
   const handleSelectMultipleChange = (event: React.ChangeEvent<{ value: unknown }>, multiSelectOption: PersonEnum) => {
-    debugger;
     setMultiSelectValue({...multiSelectValue, [multiSelectOption]: event.target.value as string[]});
   };
 
@@ -134,7 +129,12 @@ const FilterComponent: FC<any> = () => {
   }
 
   const onClickFilter = () => {
-    debugger;
+    dispatch(getListDataFromFilter({
+      [PersonEnum.NAME]: personName,
+      [PersonEnum.HAIR_COLOR]: multiSelectValue[PersonEnum.HAIR_COLOR],
+      [PersonEnum.PROFESSION]: multiSelectValue[PersonEnum.PROFESSION],
+      ranges: slidersData
+    } as SelectedFilterData, globalData));
   }
 
   return (
