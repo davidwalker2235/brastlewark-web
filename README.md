@@ -37,7 +37,7 @@ List frontend application for the visualization of characters of Brastlewark cit
 * To enter to app click on 'Enter to city' button </br>
 <img src="https://live.staticflickr.com/65535/49766270988_4024cab072.jpg" width="500" height="371" alt="brastlewark-main-screen"></br></br>
 
-* You can filter the list writting the name or throw the filter section </br>
+* You can filter the list writing the name or through the filter section </br>
 <img src="https://live.staticflickr.com/65535/49767132757_58f616128f.jpg" width="500" height="377" alt="list-screen"></br></br>
 
 * Filter section: </br>
