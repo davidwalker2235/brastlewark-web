@@ -2,7 +2,7 @@ List frontend application for the visualization of characters of Brastlewark cit
 
 # Brastlewark Web app
 
-###To run the project:
+### To run the project:
 
 * Clone the project:
 
